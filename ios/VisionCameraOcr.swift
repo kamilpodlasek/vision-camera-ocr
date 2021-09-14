@@ -106,14 +106,17 @@ private static func recognizeText(in image: VisionImage) -> (Text?) {
     
     var result = [Any]()
     for block in recognizedText.blocks {
-        
+        for line in block.lines {
         
         result.append(
             [
-                "text":block.text,
-                "bounds": [Int(block.frame.minX),Int(block.frame.minY),Int(block.frame.maxX),Int(block.frame.maxY)]
+                "text": line.text,
+                "bounds": [Int(line.frame.minX),Int(line.frame.minY),Int(line.frame.maxX),Int(line.frame.maxY)],
+                "height": Int(CVPixelBufferGetHeight(imageBuffer)),
+                "width": Int(CVPixelBufferGetWidth(imageBuffer))
             ]
         )
+    }
     }
     
 //    debugPrint(extractMRZ(_text: recognizedText))
