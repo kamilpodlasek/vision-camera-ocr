@@ -57,9 +57,9 @@ public class ScanOCRFrameProcessorPlugin: NSObject, FrameProcessorPluginBase {
         fatalError()
       }
     }
-     
+ 
 
-private static func recognizeText(in image: VisionImage) -> (Text?) {
+  private static func recognizeText(in image: VisionImage) -> (Text?) {
     var recognizedText: Text
     var options: CommonTextRecognizerOptions
     options = TextRecognizerOptions.init()
@@ -73,15 +73,6 @@ private static func recognizeText(in image: VisionImage) -> (Text?) {
     return recognizedText
   }
     
-    public static func extractMRZ(_text: Text) -> (String) {
-        var MRZ:String = ""
-        for block in _text.blocks {
-            if ((block.text as String).contains("<<<")) {
-                MRZ = MRZ + block.text
-            }
-        }
-        return MRZ
-    }
     
   @objc
   public static func callback(_ frame: Frame!, withArgs _: [Any]!) -> Any! {
@@ -100,14 +91,12 @@ private static func recognizeText(in image: VisionImage) -> (Text?) {
 
     
     guard let recognizedText = recognizeText(in: visionImage) else {
-        debugPrint("No text")
         return []
     }
     
     var result = [Any]()
     for block in recognizedText.blocks {
         for line in block.lines {
-        
         result.append(
             [
                 "text": line.text,
@@ -116,12 +105,9 @@ private static func recognizeText(in image: VisionImage) -> (Text?) {
                 "width": Int(CVPixelBufferGetWidth(imageBuffer))
             ]
         )
+    	}
     }
-    }
     
-//    debugPrint(extractMRZ(_text: recognizedText))
-    
-    
-     return result
+    return result
   }
 }
