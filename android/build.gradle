@@ -3,13 +3,18 @@ buildscript {
   def kotlin_version = rootProject.ext.has('kotlinVersion') ? rootProject.ext.get('kotlinVersion') : project.properties['VisionCameraOcr_kotlinVersion']
 
   repositories {
+    mavenLocal()
+    maven {
+      // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+      url("$rootDir/../node_modules/react-native/android")
+    }
     google()
     jcenter()
   }
 
   dependencies {
     classpath 'com.android.tools.build:gradle:3.2.1'
-    // noinspection DifferentKotlinGradleVersion
+//    // noinspection DifferentKotlinGradleVersion
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
 }
@@ -33,9 +38,9 @@ android {
     targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
     versionCode 1
     versionName "1.0"
-    
+
   }
-  
+
   buildTypes {
     release {
       minifyEnabled false
@@ -127,4 +132,7 @@ dependencies {
   // noinspection GradleDynamicVersion
   api 'com.facebook.react:react-native:+'
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  implementation "androidx.camera:camera-core:1.1.0-alpha06"
+  implementation "com.facebook.react:react-native:+"  // From node_modules
+  api project(":react-native-vision-camera")
 }
