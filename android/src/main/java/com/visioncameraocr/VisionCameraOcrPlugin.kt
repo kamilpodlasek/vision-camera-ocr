@@ -1,3 +1,5 @@
+package com.visioncameraocr
+
 import android.R.attr.label
 import android.annotation.SuppressLint
 import android.graphics.Rect
