@@ -40,13 +40,13 @@ class VisionCameraOcrPlugin: FrameProcessorPlugin("scanOCR") {
             val lineBoundingBox: Rect? = line.boundingBox
             val map = WritableNativeMap()
             map.putString("text", lineText)
-            map.putInt("height", image.height)
-            map.putInt("width", image.width)
+            map.putInt("height", if (frame.imageInfo.rotationDegrees == 90) image.width else image.height)
+            map.putInt("width", if (frame.imageInfo.rotationDegrees == 90) image.height else image.width)
             val bounds = WritableNativeArray()
             bounds.pushInt(lineBoundingBox?.left)
-            bounds.pushInt(lineBoundingBox?.bottom)
-            bounds.pushInt(lineBoundingBox?.right)
             bounds.pushInt(lineBoundingBox?.top)
+            bounds.pushInt(lineBoundingBox?.right)
+            bounds.pushInt(lineBoundingBox?.bottom)
             map.putArray("bounds", bounds)
             array.pushMap(map)
           }
