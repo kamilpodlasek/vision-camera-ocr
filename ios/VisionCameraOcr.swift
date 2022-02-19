@@ -97,14 +97,18 @@ public class ScanOCRFrameProcessorPlugin: NSObject, FrameProcessorPluginBase {
     var result = [Any]()
     for block in recognizedText.blocks {
         for line in block.lines {
-        result.append(
-            [
-                "text": line.text,
-                "bounds": [Int(line.frame.minX),Int(line.frame.minY),Int(line.frame.maxX),Int(line.frame.maxY)],
-                "height": Int(CVPixelBufferGetHeight(imageBuffer)),
-                "width": Int(CVPixelBufferGetWidth(imageBuffer))
-            ]
-        )
+            var lineResult = [Any]()
+            
+            for element in line.elements {
+                lineResult.append(
+                    [
+                        "text": element.text,
+                        "cornerPoints": element.cornerPoints,
+                    ]
+                )
+            }
+            
+            result.append(lineResult)
     	}
     }
     
